@@ -1,6 +1,12 @@
 # Fira Code iScript Patcher
 
-Combine the latest release of Fira Code regular style with Script12 BT as italic style to produce a mashup `Fira Code iScript` font for programming IDE.
+A simple Bash script to combine the latest release of `Fira Code` regular style with `Script12 BT` as italic style to produce a mashup `Fira Code iScript` font.
+
+## Usage
+
+- Require `Bash` and `Python3`
+- Copy and run `./firacode-iscript-patcher.sh`
+- Output `FiraCodeiScript-[Regular|Italic].ttf`
 
 ## Sources
 
