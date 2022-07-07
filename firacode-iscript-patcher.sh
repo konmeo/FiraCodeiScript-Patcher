@@ -3,7 +3,7 @@
 NEW_NAME=${1:-Fira Code iScript}
 FONTNAME_PY="https://raw.githubusercontent.com/chrissimpkins/fontname.py/master/fontname.py"
 REGULAR_FONT="$(wget -qO- https://api.github.com/repos/tonsky/FiraCode/releases/latest \
-    | sed -n '/browser_download_url/s/.*: \"\(.*\)\"/\1/p')?file=ttf/FiraCode-Regular.ttf"
+    | sed -n '/browser_download_url/s/.*: \"\(.*\)\"/\1/p')?file=ttf/FiraCode-*.ttf"
 SCRIPT_FONT="https://www.cdnfonts.com/download/script12-bt-cdnfonts.zip?file=SCRPT12N.TTF"
 
 main() {
@@ -12,7 +12,7 @@ main() {
 
     mkdir -p .download && cd .download
 
-    download_pkg $REGULAR_FONT "${NEW_NAME// /}-Regular"
+    download_pkg $REGULAR_FONT "${NEW_NAME// /}-*"
     download_pkg $SCRIPT_FONT "${NEW_NAME// /}-Italic"
 
     cd .. && rm -rf .download
@@ -42,9 +42,15 @@ download_pkg() {
     wget -q ${1/\?*/}
     if [ "${1/\?*/}" != "$1" ]; then
         unzip -q $(basename ${1/\?*/})
-        mv ${1/*\?file=/} ../"$2.ttf"
+        if [[ "$2" == *\** ]]; then
+            for f in ${1/*\?file=/}; do
+                mv "$f" ../"${f/*-/${2/\*/}}"
+            done
+        else
+            mv ${1/*\?file=/} ../"$2.ttf"
+        fi
     else
-        mv $(basename $1) ../.
+        mv $(basename $1) ..
     fi
 }
 
